@@ -1,5 +1,5 @@
 // Store our API endpoint inside queryUrl
-var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_month.geojson";
+var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson";
 
 // Perform a GET request to the query URL
 d3.json(queryUrl, function(data) {
@@ -18,16 +18,17 @@ function createFeatures(earthquakeData) {
 
   // Create a GeoJSON layer containing the features array on the earthquakeData object
   // Run the onEachFeature function once for each piece of data in the array
-  var earthquakes = L.geoJSON(earthquakeData, {
-    pointToLayer: function (feature, latlong) {
-        return L.circleMarker(latlong)
-    },
-    onEachFeature: onEachFeature
+  var earthquakes = L.geoJSON(earthquakeData);
+
+  // Create a legend to display information about our map
+  var info = L.control({
+  position: "bottomright"
   });
+
 
   // Sending our earthquakes layer to the createMap function
   createMap(earthquakes);
-}
+};
 
 function createMap(earthquakes) {
 
@@ -54,15 +55,15 @@ function createMap(earthquakes) {
 
   // Create overlay object to hold our overlay layer
   var overlayMaps = {
-    Earthquakes: earthquakes
+    "Earthquakes": earthquakes
   };
 
   // Create our map, giving it the sattelite and earthquakes layers to display on load
   var myMap = L.map("map", {
     center: [
-      37.09, -95.71
+      0, 0
     ],
-    zoom: 5,
+    zoom: 2,
     layers: [satellitemap, earthquakes]
   });
 
